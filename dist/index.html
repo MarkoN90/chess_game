@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <link rel="stylesheet" href="master.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.9.0/css/bulma.min.css" integrity="sha512-ADrqa2PY1TZtb/MoLZIZu/Z/LlPaWQeDMBV73EMwjGam43/JJ5fqW38Rq8LJOVGCDfrJeOMS3Q/wRUVzW5DkjQ==" crossorigin="anonymous" />    <title>Document</title>
+</head>
+<body>
+        <nav class="container-fuid"> <h2 class="text-white">Chess</h2></nav>
+
+        <div id="app" class="container-fluid p-0">
+
+                <div v-if="challengeModalshow" class="pop-modal">
+                        <div class="modal-card">
+                                <header class="modal-card-head">
+                                        <p class="modal-card-title">Challenge</p>
+                                        <button class="delete" aria-label="close"></button>
+                                </header>
+                                <section class="modal-card-body">
+                                        {{ challenger.username }} is challanging you.
+                                </section>
+                                <footer class="modal-card-foot">
+                                        <button class="button is-success" @click="acceptChallenge()">Accept</button>
+                                        <button class="button" @click="declineChallenge()" >Decline</button>
+                                </footer>
+                        </div>
+                </div>
+
+                <div v-if="singInLayer" class="layout d-flex justify-content-center align-items-center">
+                <div class="has-text-centered"><img src="aaa.png"> </div>
+
+                        <div class="modal is-active">
+                                <div class="modal-background"></div>
+                                <div class="modal-content">
+                                        <label class="mb-2 has-text-light" >your playing name</label>
+                                        <input  class="input mb-2"  v-model="username" type="text">
+
+                                        <button class="button is-primary is-light mb-2" @click="singIn($event.target.value)">Jump in</button>
+                                </div>
+                                <button class="modal-close is-large" aria-label="close"></button>
+                        </div>
+                </div>
+                <div class="columns">
+                        <div class="column is-one-eight"></div>
+
+                        <div class="column is-one-quarter">
+                                <h4>Chat</h4>
+                                <div id="chat-box" class="border"></div>
+                                <input type="text">
+                        </div>
+
+                        <div class="column">
+
+                                <h4>Game: <h5 v-if="game.on">ON</h5><span>{{ whoIsPlaying }}</span> &nbsp; <span>Opoponent: {{ opponentName }}</span></h4>
+                                <board>
+                                        <field  color="none" id="0"></field>
+                                        <field  color="none" id="1"></field>
+                                        <field  color="none" id="2"></field>
+                                        <field  color="none" id="3"></field>
+                                        <field  color="none" id="4"></field>
+                                        <field  color="none" id="5"></field>
+                                        <field  color="none" id="6"></field>
+                                        <field  color="none" id="7"></field>
+                                        <field  color="none" id="8"></field>
+                                        <field  color="none" id="9"></field>
+                                        <field  color="none" id="10"></field>
+
+                                        <field  color="none" id="11"></field>
+                                        <field  color="none" id="12"></field>
+                                        <field  color="none" id="13"></field>
+                                        <field  color="none" id="14"></field>
+                                        <field  color="none" id="15"></field>
+                                        <field  color="none" id="16"></field>
+                                        <field  color="none" id="17"></field>
+                                        <field  color="none" id="18"></field>
+                                        <field  color="none" id="19"></field>
+
+                                        <field  color="none" id="20"></field>
+
+                                        <field  color="black" id="21"><piece id="br1" color="black" type="rook"  src="peaces/b_rook.png"></piece></field>
+                                        <field  color="white" id="22"><piece color="black" type="knight" id="bk1" src="peaces/b_knight.png"></piece></field>
+                                        <field  color="black" id="23"><piece id="bbsh1" color="black" type="bishop" src="peaces/b_bishop.png"></piece></field>
+                                        <field  color="white" id="24"><piece id="bk" color="black" type="king"  src="peaces/b_king.png" ></piece></field>
+                                        <field  color="black" id="25"><piece id="bq" color="black" type="queen"  src="peaces/b_queen.png"></piece></field>
+                                        <field  color="white" id="26"><piece id="bbsh2" color="black" type="bishop"  src="peaces/b_bishop.png"></piece></field>
+                                        <field  color="black" id="27"><piece color="black" type="knight" id="bk2" src="peaces/b_knight.png"></piece></field>
+                                        <field  color="white" id="28"><piece id="br2" color="black" type="rook"  src="peaces/b_rook.png"></piece></field>
+
+                                        <field  color="none" id="29"></field>
+                                        <field  color="none" id="30"></field>
+
+
+                                        <field  color="white" id="31"><piece color="black" type="pawn" id="bp1" src="peaces/b_pawn.png" ></piece></field>
+                                        <field  color="black" id="32"><piece color="black" type="pawn" id="bp2" src="peaces/b_pawn.png" ></piece></field>
+                                        <field  color="white" id="33"><piece color="black" type="pawn" id="bp3" src="peaces/b_pawn.png" ></piece></field>
+                                        <field  color="black" id="34"><piece color="black" type="pawn" id="bp4" src="peaces/b_pawn.png" ></piece></field>
+                                        <field  color="white" id="35"><piece color="black" type="pawn" id="bp5" src="peaces/b_pawn.png" ></piece></field>
+                                        <field  color="black" id="36"><piece color="black" type="pawn" id="bp6" src="peaces/b_pawn.png" ></piece></field>
+                                        <field  color="white" id="37"><piece color="black" type="pawn" id="bp7" src="peaces/b_pawn.png" ></piece></field>
+                                        <field  color="black" id="38"><piece color="black" type="pawn" id="bp8" src="peaces/b_pawn.png" ></piece></field>
+
+                                        <field  color="none" id="39"></field>
+                                        <field  color="none" id="40"></field>
+                                        
+                                        <field  color="black" id="41"></field>
+                                        <field  color="white" id="42"></field>
+                                        <field  color="black" id="43"></field>
+                                        <field  color="white" id="44"></field>
+                                        <field  color="black" id="45"></field>
+                                        <field  color="white" id="46"></field>
+                                        <field  color="black" id="47"></field>
+                                        <field  color="white" id="48"></field>
+
+                                        <field  color="none" id="49"></field>
+                                        <field  color="none" id="50"></field>
+                                
+                                        <field  color="white" id="51"></field>
+                                        <field  color="black" id="52"></field>
+                                        <field  color="white" id="53"></field>
+                                        <field  color="black" id="54"></field>
+                                        <field  color="white" id="55"></field>
+                                        <field  color="black" id="56"></field>
+                                        <field  color="white" id="57"></field>
+                                        <field  color="black" id="58"></field>
+
+                                        <field  color="none" id="59"></field>
+                                        <field  color="none" id="60"></field>
+
+
+                                        <field  color="black" id="61"></field>
+                                        <field  color="white" id="62"></field>
+                                        <field  color="black" id="63"></field>
+                                        <field  color="white" id="64"></field>
+                                        <field  color="black" id="65">  </field>
+                                        <field  color="white" id="66"></field>
+                                        <field  color="black" id="67"> </field>
+                                        <field  color="white" id="68"></field>
+
+                                        <field  color="none" id="69"></field>
+                                        <field  color="none" id="70"></field>
+
+                                        <field  color="white" id="71"></field>
+                                        <field  color="black" id="72"></field>
+                                        <field  color="white" id="73"></field>
+                                        <field  color="black" id="74"></field>
+                                        <field  color="white" id="75"></field>
+                                        <field  color="black" id="76"></field>
+                                        <field  color="white" id="77"></field>
+                                        <field  color="black" id="78"></field>
+
+                                        <field  color="none" id="79"></field>
+                                        <field  color="none" id="80"></field>
+
+                                        <field  color="black" id="81"><piece color="white" type="pawn" id="wp1" src="peaces/w_pawn.png" ></piece></field>
+                                        <field  color="white" id="82"><piece color="white" type="pawn" id="wp2" src="peaces/w_pawn.png" ></piece></field>
+                                        <field  color="black" id="83"><piece color="white" type="pawn" id="wp3" src="peaces/w_pawn.png" ></piece></field>
+                                        <field  color="white" id="84"><piece color="white" type="pawn" id="wp4" src="peaces/w_pawn.png" ></piece></field>
+                                        <field  color="black" id="85"><piece color="white" type="pawn" id="wp5" src="peaces/w_pawn.png" ></piece></field>
+                                        <field  color="white" id="86"><piece color="white" type="pawn" id="wp6" src="peaces/w_pawn.png" ></piece></field>
+                                        <field  color="black" id="87"><piece color="white" type="pawn" id="wp7" src="peaces/w_pawn.png" ></piece></field>
+                                        <field  color="white" id="88"><piece color="white" type="pawn" id="wp8" src="peaces/w_pawn.png" ></piece></field>
+
+                                        <field  color="none" id="89"></field>
+                                        <field  color="none" id="90"></field>
+
+                                        <field  color="white" id="91"><piece color="white" type="rook" id="wr1" src="peaces/w_rook.png"></piece></field>
+                                        <field  color="black" id="92"><piece color="white" type="knight" id="wk1" src="peaces/w_knight.png"></piece></field>
+                                        <field  color="white" id="93"><piece color="white" type="bishop" id="wbsh1" src="peaces/w_bishop.png"></piece></field>
+                                        <field  color="black" id="94"><piece id="wk" color="white" type="king"  src="peaces/w_king.png" ></piece></field>
+                                        <field  color="white" id="95"><piece id="wq" color="white" type="queen"  src="peaces/w_queen.png" ></piece> </field>
+                                        <field  color="black" id="96"><piece color="white" type="bishop" id="wbsh2" src="peaces/w_bishop.png"></piece></field>
+                                        <field  color="white" id="97"><piece color="white" type="knight" id="wk2" src="peaces/w_knight.png"></piece></field>
+                                        <field  color="black" id="98"><piece color="white" type="rook" id="wr2" src="peaces/w_rook.png"></piece></field>
+
+                                        <field  color="none" id="99"></field>
+
+                                        <field  color="none" id="100"></field>
+                                        <field  color="none" id="101"></field>
+                                        <field  color="none" id="102"></field>
+                                        <field  color="none" id="103"></field>
+                                        <field  color="none" id="104"></field>
+                                        <field  color="none" id="105"></field>
+                                        <field  color="none" id="106"></field>
+                                        <field  color="none" id="107"></field>
+                                        <field  color="none" id="108"></field>
+
+                                        <field  color="none" id="109"></field>
+                                        <field  color="none" id="110"></field>
+                                        <field  color="none" id="111"></field>
+                                        <field  color="none" id="112"></field>
+                                        <field  color="none" id="113"></field>
+                                        <field  color="none" id="114"></field>
+                                        <field  color="none" id="115"></field>
+                                        <field  color="none" id="116"></field>
+                                        <field  color="none" id="117"></field>
+                                        <field  color="none" id="118"></field>
+                                        <field  color="none" id="119"></field>
+
+                                </board>
+
+                        </div>
+                        <div class="column ml-3 is-one-quarter">
+                                <h4 class="has-text-centered is-size-3">Players</h4>
+                                <ul class="pr-3" ref="activePlayers"></ul>
+                        </div>
+                        <div class="column is-one-eight"></div>
+
+                </div>
+        </div>
+    
+</body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
+ 
+<script src="bundle.js"></script>
+</html>
